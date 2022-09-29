@@ -15,10 +15,16 @@ public interface ExpenseTransactionRepository extends JpaRepository<ExpenseTrans
     @Query("SELECT c "
             + "FROM ExpenseTransaction c "
             + "WHERE c.id = ?1")
-    Optional<ExpenseTransaction> getTransactionById(UUID id);
+    Optional<ExpenseTransaction> getTransactionById(String id);
 
     @Query("SELECT c "
             + "FROM ExpenseTransaction c "
             + "WHERE c.categoryName = ?1")
     List<ExpenseTransaction> getTransactionsByCategoryName(String categoryName);
+
+    @Query("SELECT c "
+            + "FROM ExpenseTransaction c "
+            + "WHERE c.date = ?1")
+    List<ExpenseTransaction> getTransactionsByDate(String date);
+
 }

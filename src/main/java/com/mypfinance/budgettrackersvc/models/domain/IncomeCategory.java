@@ -20,7 +20,7 @@ import java.util.UUID;
 public class IncomeCategory {
 
     @Id
-    private UUID id;
+    private String id;
 
     @Column(name = "name")
     private String name;

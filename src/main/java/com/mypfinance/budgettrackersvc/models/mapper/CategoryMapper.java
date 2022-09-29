@@ -14,7 +14,7 @@ public class CategoryMapper {
     public IncomeCategory mapCategoryDtoToIncomeCategory(CategoryDto dto) {
 
         return IncomeCategory.builder()
-                .id(UUID.randomUUID())
+                .id(UUID.randomUUID().toString())
                 .name(dto.getName())
                 .color(dto.getColor())
                 .build();
@@ -23,7 +23,7 @@ public class CategoryMapper {
     public ExpenseCategory mapCategoryDtoToExpenseCategory(CategoryDto dto) {
 
         return ExpenseCategory.builder()
-                .id(UUID.randomUUID())
+                .id(UUID.randomUUID().toString())
                 .name(dto.getName())
                 .color(dto.getColor())
                 .build();

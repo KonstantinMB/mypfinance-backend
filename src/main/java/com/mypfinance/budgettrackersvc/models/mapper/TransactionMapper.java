@@ -5,6 +5,8 @@ import com.mypfinance.budgettrackersvc.models.domain.IncomeTransaction;
 import com.mypfinance.budgettrackersvc.models.dto.TransactionDto;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -14,7 +16,7 @@ public class TransactionMapper {
     public ExpenseTransaction mapTransactionDtoToExpenseTransaction(TransactionDto dto) {
 
         return ExpenseTransaction.builder()
-                .id(UUID.randomUUID())
+                .id(UUID.randomUUID().toString())
                 .date(dto.getDate())
                 .categoryName(dto.getCategoryName().toLowerCase(Locale.ROOT))
                 .amount(dto.getAmount())
@@ -26,7 +28,7 @@ public class TransactionMapper {
     public IncomeTransaction mapTransactionDtoToIncomeTransaction(TransactionDto dto) {
 
         return IncomeTransaction.builder()
-                .id(UUID.randomUUID())
+                .id(UUID.randomUUID().toString())
                 .date(dto.getDate())
                 .categoryName(dto.getCategoryName().toLowerCase(Locale.ROOT))
                 .amount(dto.getAmount())
@@ -55,5 +57,23 @@ public class TransactionMapper {
                 .currency(domain.getCurrency())
                 .description(domain.getDescription())
                 .build();
+    }
+
+    public List<TransactionDto> mapListOfExpenseTransactionsToDtos (List<ExpenseTransaction> transactions){
+
+        List<TransactionDto> dtos = new ArrayList<>();
+        for(ExpenseTransaction transaction : transactions){
+            dtos.add(mapExpenseTransactionToDto(transaction));
+        }
+        return  dtos;
+    }
+
+    public List<TransactionDto> mapListOfIncomeTransactionsToDtos (List<IncomeTransaction> transactions){
+
+        List<TransactionDto> dtos = new ArrayList<>();
+        for(IncomeTransaction transaction : transactions){
+            dtos.add(mapIncomeTransactionToDto(transaction));
+        }
+        return  dtos;
     }
 }

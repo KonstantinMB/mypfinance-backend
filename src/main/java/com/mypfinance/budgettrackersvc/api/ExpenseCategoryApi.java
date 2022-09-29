@@ -15,17 +15,17 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api/v1/budget-tracker/expense/category")
+@RequestMapping("/api/v1/budget-tracker/expense/categories")
 public class ExpenseCategoryApi {
 
     private final ExpenseCategoryService service;
 
-    private final CategoryMapper categoryMapper;
+    private final CategoryMapper mapper;
 
     @Autowired
     public ExpenseCategoryApi(ExpenseCategoryService service, CategoryMapper categoryMapper) {
         this.service = service;
-        this.categoryMapper = categoryMapper;
+        this.mapper = categoryMapper;
     }
 
     @GetMapping(consumes = APPLICATION_JSON_VALUE)
@@ -35,7 +35,7 @@ public class ExpenseCategoryApi {
 
         List<CategoryDto> response = new ArrayList<>();
         for(ExpenseCategory category : categories){
-            response.add(categoryMapper.mapExpenseCategoryToDto(category));
+            response.add(mapper.mapExpenseCategoryToDto(category));
         }
 
         return ResponseEntity.ok(response);
@@ -44,7 +44,7 @@ public class ExpenseCategoryApi {
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto request) throws ResourceNotFoundException {
 
-        return ResponseEntity.ok(categoryMapper.mapExpenseCategoryToDto(
-                service.saveCategory(categoryMapper.mapCategoryDtoToExpenseCategory(request))));
+        return ResponseEntity.ok(mapper.mapExpenseCategoryToDto(
+                service.saveCategory(mapper.mapCategoryDtoToExpenseCategory(request))));
     }
 }

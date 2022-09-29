@@ -15,7 +15,7 @@ public interface IncomeTransactionRepository extends JpaRepository<IncomeTransac
     @Query("SELECT c "
             + "FROM IncomeTransaction c "
             + "WHERE c.id = ?1")
-    Optional<IncomeTransaction> getTransactionById(UUID id);
+    Optional<IncomeTransaction> getTransactionById(String id);
 
     @Query("SELECT c "
             + "FROM IncomeTransaction c "

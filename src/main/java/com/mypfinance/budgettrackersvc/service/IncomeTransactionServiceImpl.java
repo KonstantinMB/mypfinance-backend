@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -19,7 +18,7 @@ public class IncomeTransactionServiceImpl implements IncomeTransactionService {
     private final IncomeTransactionRepository repository;
 
     @Override
-    public IncomeTransaction getTransactionById(UUID id) throws ResourceNotFoundException {
+    public IncomeTransaction getTransactionById(String id) throws ResourceNotFoundException {
 
         Optional<IncomeTransaction> response = repository.getTransactionById(id);
 

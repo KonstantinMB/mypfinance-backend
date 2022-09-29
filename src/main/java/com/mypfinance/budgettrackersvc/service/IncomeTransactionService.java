@@ -4,11 +4,10 @@ import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
 import com.mypfinance.budgettrackersvc.models.domain.IncomeTransaction;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface IncomeTransactionService {
 
-    IncomeTransaction getTransactionById(UUID id) throws ResourceNotFoundException;
+    IncomeTransaction getTransactionById(String id) throws ResourceNotFoundException;
 
     List<IncomeTransaction> getTransactionsByCategoryName(String categoryName) throws ResourceNotFoundException;
 

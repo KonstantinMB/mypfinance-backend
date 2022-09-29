@@ -19,7 +19,7 @@ public class IncomeTransaction {
 
     @Id
     @NotNull
-    private UUID id;
+    private String id;
 
     @Column(name = "date")
     @NotNull
