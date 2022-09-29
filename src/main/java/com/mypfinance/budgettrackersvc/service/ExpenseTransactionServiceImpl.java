@@ -1,0 +1,56 @@
+package com.mypfinance.budgettrackersvc.service;
+
+import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
+import com.mypfinance.budgettrackersvc.models.domain.ExpenseTransaction;
+import com.mypfinance.budgettrackersvc.repository.ExpenseTransactionRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+@Service
+@AllArgsConstructor
+public class ExpenseTransactionServiceImpl implements ExpenseTransactionService {
+
+    private final ExpenseTransactionRepository repository;
+
+    @Override
+    public ExpenseTransaction getTransactionById(UUID id) throws ResourceNotFoundException {
+
+        Optional<ExpenseTransaction> response = repository.getTransactionById(id);
+
+        if(response.isEmpty()){
+            throw new ResourceNotFoundException(String.format("Failed to find transaction with ID: %s", id), BAD_REQUEST);
+        }
+
+        return response.get();
+    }
+
+    @Override
+    public List<ExpenseTransaction> getTransactionsByCategoryName(String categoryName) throws ResourceNotFoundException {
+
+        List<ExpenseTransaction> response = repository.getTransactionsByCategoryName(categoryName);
+
+        if(response.isEmpty()) {
+            throw new ResourceNotFoundException(String.format("No transactions were found with this category name: %s", categoryName), BAD_REQUEST);
+        }
+        return response;
+    }
+
+    @Override
+    public ExpenseTransaction saveTransaction(ExpenseTransaction transaction) throws ResourceNotFoundException {
+
+        repository.save(transaction);
+
+        Optional<ExpenseTransaction> response = repository.getTransactionById(transaction.getId());
+
+        if(response.isEmpty()){
+            throw new ResourceNotFoundException(String.format("Failed to find transaction with ID: %s", transaction.getId()), BAD_REQUEST);
+        }
+        return response.get();
+    }
+}

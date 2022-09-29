@@ -9,8 +9,6 @@ import lombok.*;
 @Getter
 public class CategoryDto {
 
-    private String type;
-
     private String name;
 
     private String color;

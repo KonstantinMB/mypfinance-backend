@@ -33,4 +33,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .entity();
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiError> processResourceNotFoundException(ResourceNotFoundException exception) {
+
+        return ApiError.builder()
+                .exception(exception)
+                .status(BAD_REQUEST)
+                .entity();
+    }
+
 }

@@ -14,7 +14,7 @@ public class GoogleClient {
     // Prepares a new dataset
     Dataset dataset = null;
     DatasetInfo datasetInfo = DatasetInfo.newBuilder(datasetName).build();
-
-    // Creates the dataset
-    dataset = bigquery.create(datasetInfo);
+//
+//    // Creates the dataset
+//    dataset = bigquery.create(datasetInfo);
 }

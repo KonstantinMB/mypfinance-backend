@@ -11,22 +11,16 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "category")
+@Table(name = "expense_category")
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class ExpenseCategory {
 
     @Id
     private UUID id;
-
-    /*
-     * The type of the category. Could have only two values: EXPENSE/INCOME
-     */
-    @Column(name = "type")
-    private String type;
 
     @Column(name = "name")
     private String name;
@@ -40,19 +34,16 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Category category = (Category) o;
+        ExpenseCategory that = (ExpenseCategory) o;
 
-        if (!Objects.equals(id, category.id)) return false;
-        if (!Objects.equals(type, category.type)) return false;
-        if (!Objects.equals(name, category.name))
-            return false;
-        return Objects.equals(color, category.color);
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(name, that.name)) return false;
+        return Objects.equals(color, that.color);
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (color != null ? color.hashCode() : 0);
         return result;

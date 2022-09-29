@@ -54,6 +54,16 @@ public class RestResponseBuilder {
         return this;
     }
 
+    public RestResponseBuilder exception(ResourceNotFoundException exception) {
+        HttpStatus status = exception.getStatus();
+        this.httpStatus = status.value();
+
+        if (status.isError()) {
+            this.error = status.getReasonPhrase();
+        }
+        return this;
+    }
+
     public RestResponseBuilder message(String message) {
         this.message = message;
         return this;
