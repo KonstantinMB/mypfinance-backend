@@ -15,7 +15,7 @@ public interface IncomeCategoryRepository extends JpaRepository<IncomeCategory, 
     @Query("SELECT c "
             + "FROM IncomeCategory c "
             + "WHERE c.id = ?1")
-    Optional<IncomeCategory> getCategoryById(UUID id);
+    Optional<IncomeCategory> getCategoryById(String id);
 
     @Query("SELECT c "
             + "FROM IncomeCategory c "

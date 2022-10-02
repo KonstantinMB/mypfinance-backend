@@ -1,14 +1,15 @@
 package com.mypfinance.budgettrackersvc.models.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
+
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.DETACH;
 
 @Entity
 @Table(name = "income_category")
@@ -28,6 +29,11 @@ public class IncomeCategory {
     @Column(name = "color")
     @Nullable
     private String color;
+
+    @ManyToOne(cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @JoinColumn(name = "account_category_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Account account;
 
     @Override
     public boolean equals(Object o) {

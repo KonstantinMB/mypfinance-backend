@@ -4,9 +4,7 @@ package com.mypfinance.budgettrackersvc.models.dto;
 import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
+@Data
 public class CategoryDto {
 
     private String name;

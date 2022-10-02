@@ -51,7 +51,7 @@ public class ExpenseTransactionsApi {
     }
 
     @PutMapping(value = "/{transactionId}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<TransactionDto> modifyExpenseTransaction(@PathVariable String transactionId, @RequestBody TransactionDto request)
+    public ResponseEntity<TransactionDto> modifyTransaction(@PathVariable String transactionId, @RequestBody TransactionDto request)
             throws RuntimeException, ResourceNotFoundException {
 
         return ResponseEntity.ok(mapper.mapExpenseTransactionToDto(

@@ -1,16 +1,11 @@
 package com.mypfinance.budgettrackersvc.models.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
+@Data
 public class TransactionDto {
 
     private LocalDate date;

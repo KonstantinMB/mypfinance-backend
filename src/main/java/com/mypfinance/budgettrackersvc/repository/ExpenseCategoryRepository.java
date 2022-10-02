@@ -10,12 +10,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ExpenseCategoryRepository extends JpaRepository<ExpenseCategory, UUID> {
+public interface ExpenseCategoryRepository extends JpaRepository<ExpenseCategory, String> {
 
     @Query("SELECT c "
             + "FROM ExpenseCategory c "
             + "WHERE c.id = ?1")
-    Optional<ExpenseCategory> getCategoryById(UUID id);
+    Optional<ExpenseCategory> getCategoryById(String id);
 
     @Query("SELECT c "
             + "FROM ExpenseCategory c "
