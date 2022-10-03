@@ -1,9 +1,7 @@
 package com.mypfinance.budgettrackersvc.service;
 
-import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
-import com.mypfinance.budgettrackersvc.models.domain.ExpenseCategory;
+import com.mypfinance.exception.ResourceNotFoundException;
 import com.mypfinance.budgettrackersvc.models.domain.IncomeCategory;
-import com.mypfinance.budgettrackersvc.repository.ExpenseCategoryRepository;
 import com.mypfinance.budgettrackersvc.repository.IncomeCategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

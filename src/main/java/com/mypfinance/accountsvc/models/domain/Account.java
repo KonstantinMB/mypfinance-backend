@@ -1,6 +1,5 @@
-package com.mypfinance.budgettrackersvc.models.domain;
+package com.mypfinance.accountsvc.models.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,9 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name="accounts")
@@ -49,23 +46,6 @@ public class Account {
 
     @Column(name = "registration_date")
     private LocalDate registrationDate;
-
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "account")
-    private Set<ExpenseCategory> expenseCategories;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "account")
-    private List<ExpenseTransaction> expenseTransactions;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "account")
-    private Set<IncomeCategory> incomeCategories;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "account")
-    private List<IncomeTransaction> incomeTransactions;
 
     @Override
     public boolean equals(Object o) {

@@ -1,12 +1,11 @@
-package com.mypfinance.budgettrackersvc.service;
+package com.mypfinance.accountsvc.service;
 
-import com.mypfinance.budgettrackersvc.exception.RequestNotValidException;
-import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
-import com.mypfinance.budgettrackersvc.models.domain.Account;
-import com.mypfinance.budgettrackersvc.repository.AccountRepository;
+import com.mypfinance.exception.RequestNotValidException;
+import com.mypfinance.exception.ResourceNotFoundException;
+import com.mypfinance.accountsvc.models.domain.Account;
+import com.mypfinance.accountsvc.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

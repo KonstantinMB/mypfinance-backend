@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -21,32 +22,34 @@ import static javax.persistence.CascadeType.DETACH;
 public class ExpenseTransaction {
 
     @Id
-    @NotNull
     private String id;
 
+    @Column(name = "account_id")
+    private String accountId;
+
     @Column(name = "date")
-    @NotNull
+    @NotBlank(message = "Please provide the date of the transaction.")
     private LocalDate date;
 
     @Column(name = "amount")
-    @NotNull
+    @NotBlank(message = "Please provide the amount of the transaction.")
     private String amount;
 
     @Column(name = "currency")
-    @NotNull
+    @NotBlank(message = "Please provide the currency of the transaction.")
     private String currency;
 
     @Column(name = "category_name")
-    @NotNull
+    @NotBlank(message = "Please provide the category name of the transaction.")
     private String categoryName;
 
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(cascade = {PERSIST, MERGE, REFRESH, DETACH})
-    @JoinColumn(name = "account_transaction_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     @JsonIgnore
-    private Account account;
+    private ExpenseCategory expenseCategory;
 
     @Override
     public boolean equals(Object o) {

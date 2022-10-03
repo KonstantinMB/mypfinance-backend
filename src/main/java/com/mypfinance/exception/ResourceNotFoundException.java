@@ -1,4 +1,4 @@
-package com.mypfinance.budgettrackersvc.exception;
+package com.mypfinance.exception;
 
 import lombok.Getter;
 import lombok.Setter;

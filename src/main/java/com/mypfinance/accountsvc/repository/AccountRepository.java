@@ -1,6 +1,6 @@
-package com.mypfinance.budgettrackersvc.repository;
+package com.mypfinance.accountsvc.repository;
 
-import com.mypfinance.budgettrackersvc.models.domain.Account;
+import com.mypfinance.accountsvc.models.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
