@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,18 +25,23 @@ public class Account {
     private String id;
 
     @Column(name = "username")
+    @NotBlank(message = "Please provide a value for username.")
     private String username;
 
     @Column(name = "password")
+    @NotBlank
     private String password;
 
     @Column(name = "first_name")
+    @NotBlank(message = "Please provide at least the account user's first name.")
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "email")
+    @NotBlank(message = "Please provide an email.")
+    @Email
     private String email;
 
     @Column(name = "balance")

@@ -5,6 +5,8 @@ import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
 import com.mypfinance.budgettrackersvc.models.domain.Account;
 import com.mypfinance.budgettrackersvc.repository.AccountRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,6 +18,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository repository;
+
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public Account getAccountInfo(String accountId) throws ResourceNotFoundException {
@@ -34,6 +38,10 @@ public class AccountServiceImpl implements AccountService {
         if(repository.getAccountById(account.getId()).isPresent()){
             throw new RequestNotValidException("&.id", "This account already exists.", BAD_REQUEST);
         }
+
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+
+
         return repository.save(account);
     }
 }
