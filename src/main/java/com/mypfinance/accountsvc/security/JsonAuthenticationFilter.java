@@ -1,6 +1,7 @@
 package com.mypfinance.accountsvc.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -10,7 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+@RequiredArgsConstructor
+public class JsonAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -25,7 +27,7 @@ public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticati
             }
             LoginCredentials authRequest = objectMapper.readValue(sb.toString(), LoginCredentials.class);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    authRequest.getEmail(), authRequest.getPassword()
+                    authRequest.getUsername(), authRequest.getPassword()
             );
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);

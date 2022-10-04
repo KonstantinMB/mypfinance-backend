@@ -23,9 +23,12 @@ public class AccountApi {
         this.mapper = mapper;
     }
 
-    @GetMapping(value = "/{accountId}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountResponse> getAccountInfo(@PathVariable String accountId) throws ResourceNotFoundException {
+    @GetMapping(value = "/email", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountResponse> getAccountInfo() throws ResourceNotFoundException {
 
-        return ResponseEntity.ok(mapper.mapAccountToAccountResponse(service.getAccountInfo(accountId)));
+//        TODO:
+        String username = null;
+
+        return ResponseEntity.ok(mapper.mapAccountToAccountResponse(service.getAccountInfo(username)));
     }
 }

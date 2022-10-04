@@ -5,6 +5,7 @@ import com.mypfinance.exception.ResourceNotFoundException;
 import com.mypfinance.accountsvc.models.domain.Account;
 import com.mypfinance.accountsvc.repository.AccountRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,21 +22,27 @@ public class AccountServiceImpl implements AccountService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Account getAccountInfo(String accountId) throws ResourceNotFoundException {
+    public Account getAccountInfo(String username) throws UsernameNotFoundException {
 
-        Optional<Account> account =  repository.getAccountById(accountId);
+        Optional<Account> account =  repository.findAccountByUsername(username);
 
         if(account.isEmpty()) {
-            throw new ResourceNotFoundException(String.format("No account with ID %s has been found.", accountId), BAD_REQUEST);
+            throw new UsernameNotFoundException(String.format("Account with this username [%s] does not exist.", username));
         }
         return account.get();
     }
 
     @Override
+    public Account updateAccount(Account account) throws RequestNotValidException {
+        return null;
+    }
+
+    @Override
     public Account saveAccount(Account account) throws RequestNotValidException {
 
-        if(repository.getAccountById(account.getId()).isPresent()){
-            throw new RequestNotValidException("&.id", "This account already exists.", BAD_REQUEST);
+        String username = account.getUsername();
+        if(repository.findAccountByUsername(username).isPresent()){
+            throw new UsernameNotFoundException(String.format("Account with this username [%s] does not exist.", username));
         }
 
         account.setPassword(passwordEncoder.encode(account.getPassword()));
