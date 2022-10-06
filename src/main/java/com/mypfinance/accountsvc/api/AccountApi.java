@@ -23,7 +23,7 @@ public class AccountApi {
         this.mapper = mapper;
     }
 
-    @GetMapping(value = "/email", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountResponse> getAccountInfo() throws ResourceNotFoundException {
 
 //        TODO:

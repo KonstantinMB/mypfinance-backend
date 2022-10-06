@@ -45,6 +45,6 @@ public class ExpenseCategoryApi {
     public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto request) throws ResourceNotFoundException {
 
         return ResponseEntity.ok(mapper.mapExpenseCategoryToDto(
-                service.saveCategory(mapper.mapCategoryDtoToExpenseCategory(request))));
+                service.saveCategory(mapper.mapCategoryDtoToExpenseCategory(null, request))));
     }
 }

@@ -1,7 +1,5 @@
 package com.mypfinance.accountsvc.security;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
-import com.mypfinance.accountsvc.service.AccountDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,35 +7,46 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
-import java.net.http.HttpRequest;
-
 @Configuration
+@EnableWebSecurity
 @Slf4j
 public class MyPFinanceSecurity {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-    private final AuthenticationManager authenticationManager;
-
-    private final SuccessfulAuthentication authSuccessHandler;
-
-    private final AccountDetailsService detailsService;
-
-    private final String secret;
-
-    public MyPFinanceSecurity(AuthenticationManager authenticationManager, SuccessfulAuthentication authSuccessHandler, AccountDetailsService detailsService, String secret) {
-        this.authenticationManager = authenticationManager;
-        this.authSuccessHandler = authSuccessHandler;
-        this.detailsService = detailsService;
-        this.secret = secret;
+    @Bean
+    public CustomAuth customAuth () {
+        return new CustomAuth();
     }
 
-    private SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    @Bean
+    public CustomAuthorisationFilter customAuthorisationFilter () {
+        return new CustomAuthorisationFilter();
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.
                 cors().and().csrf().disable()
                 .authorizeHttpRequests((auth) -> {
@@ -49,9 +58,8 @@ public class MyPFinanceSecurity {
                                 .and()
                                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                                 .and()
-                                .addFilter(authenticationFilter())
-                                .addFilter(new JwtAuthorizationFilter(authenticationManager,
-                                        detailsService, secret))
+                                .addFilter(customAuth())
+                                .addFilter(customAuthorisationFilter())
                                 .exceptionHandling()
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
                     } catch (Exception e) {
@@ -63,11 +71,4 @@ public class MyPFinanceSecurity {
         return http.build();
     }
 
-    @Bean
-    public JsonAuthenticationFilter authenticationFilter() throws Exception {
-        JsonAuthenticationFilter filter = new JsonAuthenticationFilter();
-        filter.setAuthenticationSuccessHandler(authSuccessHandler);
-        filter.setAuthenticationManager(authenticationManager);
-        return filter;
-    }
 }

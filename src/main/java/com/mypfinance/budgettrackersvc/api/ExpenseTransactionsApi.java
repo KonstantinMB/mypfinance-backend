@@ -55,7 +55,7 @@ public class ExpenseTransactionsApi {
             throws RuntimeException, ResourceNotFoundException {
 
         return ResponseEntity.ok(mapper.mapExpenseTransactionToDto(
-                service.modifyTransaction(transactionId, mapper.mapTransactionDtoToExpenseTransaction(request))));
+                service.modifyTransaction(transactionId, mapper.mapTransactionDtoToExpenseTransaction(null, request))));
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE , consumes = APPLICATION_JSON_VALUE)
@@ -63,7 +63,7 @@ public class ExpenseTransactionsApi {
             throws ResourceNotFoundException {
 
         return ResponseEntity.ok(mapper.mapExpenseTransactionToDto(
-                service.saveTransaction(mapper.mapTransactionDtoToExpenseTransaction(request))));
+                service.saveTransaction(mapper.mapTransactionDtoToExpenseTransaction(null, request))));
     }
 
     @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
