@@ -7,8 +7,10 @@ import com.mypfinance.budgettrackersvc.models.mapper.CategoryMapper;
 import com.mypfinance.budgettrackersvc.service.ExpenseCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class ExpenseCategoryApi {
     }
 
     @GetMapping(consumes = APPLICATION_JSON_VALUE)
+    @RolesAllowed("USER")
     public ResponseEntity<List<CategoryDto>> getCategories() throws ResourceNotFoundException {
 
         List<ExpenseCategory> categories = service.getAllCategories();
@@ -45,6 +48,6 @@ public class ExpenseCategoryApi {
     public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto request) throws ResourceNotFoundException {
 
         return ResponseEntity.ok(mapper.mapExpenseCategoryToDto(
-                service.saveCategory(mapper.mapCategoryDtoToExpenseCategory(null, request))));
+                service.saveCategory(mapper.mapCategoryDtoToExpenseCategory(request))));
     }
 }

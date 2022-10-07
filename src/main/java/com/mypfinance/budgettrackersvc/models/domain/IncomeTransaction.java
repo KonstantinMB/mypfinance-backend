@@ -44,11 +44,6 @@ public class IncomeTransaction {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(cascade = {PERSIST, MERGE, REFRESH, DETACH})
-    @JoinColumn(name = "account_transaction_id", referencedColumnName = "id")
-    @JsonIgnore
-    private Account account;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

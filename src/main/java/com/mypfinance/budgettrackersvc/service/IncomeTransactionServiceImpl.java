@@ -6,6 +6,7 @@ import com.mypfinance.budgettrackersvc.repository.IncomeTransactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,7 @@ public class IncomeTransactionServiceImpl implements IncomeTransactionService {
     }
 
     @Override
+    @Transactional
     public IncomeTransaction saveTransaction(IncomeTransaction transaction) throws ResourceNotFoundException {
 
         repository.save(transaction);

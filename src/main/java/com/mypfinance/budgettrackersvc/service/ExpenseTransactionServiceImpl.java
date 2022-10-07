@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
@@ -57,6 +58,7 @@ public class ExpenseTransactionServiceImpl implements ExpenseTransactionService 
     }
 
     @Override
+    @Transactional
     public ExpenseTransaction saveTransaction(ExpenseTransaction transaction) throws ResourceNotFoundException {
 
         repository.save(transaction);
@@ -70,6 +72,7 @@ public class ExpenseTransactionServiceImpl implements ExpenseTransactionService 
     }
 
     @Override
+    @Transactional
     public ExpenseTransaction modifyTransaction(String transactionId, ExpenseTransaction request)
             throws RuntimeException, ResourceNotFoundException {
 

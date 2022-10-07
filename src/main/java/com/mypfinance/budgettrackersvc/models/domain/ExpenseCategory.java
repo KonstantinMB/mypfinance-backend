@@ -30,11 +30,6 @@ public class ExpenseCategory {
     @Nullable
     private String color;
 
-    @ManyToOne(cascade = {PERSIST, MERGE, REFRESH, DETACH})
-    @JoinColumn(name = "account_category_id", referencedColumnName = "id")
-    @JsonIgnore
-    private Account account;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
