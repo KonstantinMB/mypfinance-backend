@@ -1,6 +1,6 @@
 package com.mypfinance.budgettrackersvc.service;
 
-import com.mypfinance.exception.ResourceNotFoundException;
+import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
 import com.mypfinance.budgettrackersvc.models.domain.ExpenseTransaction;
 import com.mypfinance.budgettrackersvc.repository.ExpenseTransactionRepository;
 import lombok.AllArgsConstructor;

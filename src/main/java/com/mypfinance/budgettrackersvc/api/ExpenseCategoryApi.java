@@ -1,6 +1,6 @@
 package com.mypfinance.budgettrackersvc.api;
 
-import com.mypfinance.exception.ResourceNotFoundException;
+import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
 import com.mypfinance.budgettrackersvc.models.domain.ExpenseCategory;
 import com.mypfinance.budgettrackersvc.models.dto.CategoryDto;
 import com.mypfinance.budgettrackersvc.models.mapper.CategoryMapper;

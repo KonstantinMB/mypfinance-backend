@@ -1,8 +1,8 @@
-package com.mypfinance.accountsvc.models;
+package com.mypfinance.budgettrackersvc.models.mapper;
 
-import com.mypfinance.accountsvc.models.domain.Account;
-import com.mypfinance.accountsvc.models.dto.AccountDto;
-import com.mypfinance.accountsvc.models.dto.AccountResponse;
+import com.mypfinance.budgettrackersvc.models.domain.Account;
+import com.mypfinance.budgettrackersvc.models.dto.AccountDto;
+import com.mypfinance.budgettrackersvc.models.dto.AccountResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

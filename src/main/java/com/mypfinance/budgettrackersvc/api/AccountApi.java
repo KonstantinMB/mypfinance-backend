@@ -1,9 +1,11 @@
-package com.mypfinance.accountsvc.api;
+package com.mypfinance.budgettrackersvc.api;
 
-import com.mypfinance.exception.ResourceNotFoundException;
-import com.mypfinance.accountsvc.models.dto.AccountResponse;
-import com.mypfinance.accountsvc.models.AccountMapper;
-import com.mypfinance.accountsvc.service.AccountService;
+import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
+import com.mypfinance.budgettrackersvc.models.dto.AccountDto;
+import com.mypfinance.budgettrackersvc.models.dto.AccountResponse;
+import com.mypfinance.budgettrackersvc.models.dto.TransactionDto;
+import com.mypfinance.budgettrackersvc.models.mapper.AccountMapper;
+import com.mypfinance.budgettrackersvc.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

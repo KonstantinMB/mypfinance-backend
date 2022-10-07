@@ -1,31 +1,22 @@
 package com.mypfinance.accountsvc.models.domain;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name="accounts", indexes = {
-        @Index(name = "index1", columnList = "id"),
-        @Index(name = "index2", columnList = "username")
-})
+@Table(name="accounts")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
-public class Account implements UserDetails {
+public class Account {
 
     @Id
     private String id;
@@ -55,50 +46,6 @@ public class Account implements UserDetails {
 
     @Column(name = "registration_date")
     private LocalDate registrationDate;
-
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @Column(name = "enabled")
-    private boolean enabled;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(this.role.name()));
-        return  authorities;
-    }
-
-    @Override
-    public String getPassword(){
-        return this.password;
-    }
-
-    @Override
-    public String getUsername(){
-        return this.username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,14 +1,13 @@
 package com.mypfinance.budgettrackersvc.models.domain;
 
-import com.mypfinance.accountsvc.models.domain.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.CascadeType.DETACH;
@@ -23,34 +22,32 @@ import static javax.persistence.CascadeType.DETACH;
 public class IncomeTransaction {
 
     @Id
+    @NotNull
     private String id;
 
-    @Column(name = "account_id")
-    private String accountId;
-
     @Column(name = "date")
-    @NotBlank(message = "Please provide the date of the transaction.")
+    @NotNull
     private LocalDate date;
 
     @Column(name = "amount")
-    @NotBlank(message = "Please provide the amount of the transaction.")
+    @NotNull
     private String amount;
 
     @Column(name = "currency")
-    @NotBlank(message = "Please provide the currency of the transaction.")
+    @NotNull
     private String currency;
 
     @Column(name = "category_name")
-    @NotBlank(message = "Please provide the category name of the transaction.")
+    @NotNull
     private String categoryName;
 
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY,  cascade = {PERSIST, MERGE, REFRESH, DETACH})
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @ManyToOne(cascade = {PERSIST, MERGE, REFRESH, DETACH})
+    @JoinColumn(name = "account_transaction_id", referencedColumnName = "id")
     @JsonIgnore
-    private IncomeCategory incomeCategory;
+    private Account account;
 
     @Override
     public boolean equals(Object o) {

@@ -1,4 +1,4 @@
-package com.mypfinance.exception;
+package com.mypfinance.budgettrackersvc.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

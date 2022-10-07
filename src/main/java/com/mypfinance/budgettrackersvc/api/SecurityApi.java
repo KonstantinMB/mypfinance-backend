@@ -1,17 +1,18 @@
-package com.mypfinance.accountsvc.api;
+package com.mypfinance.budgettrackersvc.api;
 
-import com.mypfinance.exception.ResourceNotFoundException;
-import com.mypfinance.accountsvc.models.dto.AccountDto;
-import com.mypfinance.accountsvc.models.dto.AccountResponse;
-import com.mypfinance.accountsvc.models.AccountMapper;
-import com.mypfinance.accountsvc.service.AccountService;
+import com.mypfinance.budgettrackersvc.exception.ResourceNotFoundException;
+import com.mypfinance.budgettrackersvc.models.dto.AccountDto;
+import com.mypfinance.budgettrackersvc.models.dto.AccountResponse;
+import com.mypfinance.budgettrackersvc.models.dto.TransactionDto;
+import com.mypfinance.budgettrackersvc.models.mapper.AccountMapper;
+import com.mypfinance.budgettrackersvc.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api/v1/account-svc")
+@RequestMapping("/api/v1")
 public class SecurityApi {
 
     private final AccountService service;
@@ -28,6 +29,7 @@ public class SecurityApi {
     public ResponseEntity<AccountResponse> registerAccount(@RequestBody AccountDto request)
             throws ResourceNotFoundException {
 
-        return null;
+        return ResponseEntity.ok(mapper.mapAccountToAccountResponse(
+                service.saveAccount(mapper.mapAccountDtoToAccount(request))));
     }
 }

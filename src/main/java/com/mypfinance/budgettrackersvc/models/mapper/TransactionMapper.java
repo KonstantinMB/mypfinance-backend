@@ -13,11 +13,10 @@ import java.util.UUID;
 @Component
 public class TransactionMapper {
 
-    public ExpenseTransaction mapTransactionDtoToExpenseTransaction(String accountId, TransactionDto dto) {
+    public ExpenseTransaction mapTransactionDtoToExpenseTransaction(TransactionDto dto) {
 
         return ExpenseTransaction.builder()
                 .id(UUID.randomUUID().toString())
-                .accountId(accountId)
                 .date(dto.getDate())
                 .categoryName(dto.getCategoryName().toLowerCase(Locale.ROOT))
                 .amount(dto.getAmount())
@@ -26,11 +25,10 @@ public class TransactionMapper {
                 .build();
     }
 
-    public IncomeTransaction mapTransactionDtoToIncomeTransaction(String accountId, TransactionDto dto) {
+    public IncomeTransaction mapTransactionDtoToIncomeTransaction(TransactionDto dto) {
 
         return IncomeTransaction.builder()
                 .id(UUID.randomUUID().toString())
-                .accountId(accountId)
                 .date(dto.getDate())
                 .categoryName(dto.getCategoryName().toLowerCase(Locale.ROOT))
                 .amount(dto.getAmount())

@@ -1,15 +1,17 @@
-package com.mypfinance.accountsvc.models.dto;
+package com.mypfinance.budgettrackersvc.models.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Builder
 @Data
-public class AccountResponse {
+public class AccountDto {
 
     private String username;
+
+    private String password;
 
     private String firstName;
 
@@ -18,5 +20,7 @@ public class AccountResponse {
     private String email;
 
     private BigDecimal balance;
+
+    private LocalDate registrationDate;
 
 }
