@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -45,7 +45,7 @@ public class Account {
     private BigDecimal balance;
 
     @Column(name = "registration_date")
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate;
 
     @Override
     public boolean equals(Object o) {

@@ -21,6 +21,4 @@ public class AccountDto {
 
     private BigDecimal balance;
 
-    private LocalDate registrationDate;
-
 }

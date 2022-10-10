@@ -2,7 +2,9 @@ package com.mypfinance.accountsvc.service;
 
 import com.mypfinance.accountsvc.models.domain.Account;
 import com.mypfinance.accountsvc.repository.AccountRepository;
+import com.mypfinance.budgettrackersvc.exception.RequestNotValidException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,6 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository repository;
 
-    private final BCryptPasswordEncoder passwordEncoder;
-
     @Override
     public Account getAccountInfo(String username) throws UsernameNotFoundException {
 
@@ -31,6 +31,27 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void accountExists(String username, String email) throws RequestNotValidException {
+
+        Optional<Account> accountByEmail =  repository.getAccountByEmail(email);
+
+        if(accountByEmail.isPresent()) {
+            throw new RequestNotValidException("$.email",
+                    String.format("Account with this email [%s] already exists.", email),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<Account> accountByUsername =  repository.getAccountByUsername(username);
+
+        if(accountByUsername.isPresent()) {
+            throw new RequestNotValidException("$.username",
+                    String.format("Account with this username [%s] already exists.", username),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @Override
     @Transactional
     public Account updateAccount(Account account) {
         return null;
@@ -39,14 +60,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public Account saveAccount(Account account) {
-
-        String username = account.getUsername();
-        if(repository.getAccountByUsername(username).isPresent()){
-            throw new UsernameNotFoundException(String.format("Account with this username [%s] does not exist.", username));
-        }
-
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
-
 
         return repository.save(account);
     }
