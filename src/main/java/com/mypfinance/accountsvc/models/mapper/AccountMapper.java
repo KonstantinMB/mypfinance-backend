@@ -32,6 +32,7 @@ public class AccountMapper {
                 .email(dto.getEmail())
                 .balance(dto.getBalance())
                 .registrationDate(registrationDate)
+                .roles("ROLE_USER")
                 .build();
     }
 

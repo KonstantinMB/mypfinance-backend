@@ -47,6 +47,9 @@ public class Account {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
+    @Column(name="roles")
+    private String roles;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

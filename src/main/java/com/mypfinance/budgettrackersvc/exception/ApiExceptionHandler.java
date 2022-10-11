@@ -13,12 +13,14 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+//    TODO: Move to account-svc
     @ExceptionHandler(ResponseStatusException.class)
     ResponseEntity<?> processResponseStatusException(ResponseStatusException exception, WebRequest request) {
 
         return ApiError.builder()
                 .exception(exception)
                 .path(request.getDescription(false).substring(4))
+                .message(exception.getMessage())
                 .status(BAD_REQUEST)
                 .entity();
     }
@@ -29,6 +31,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ApiError.builder()
                 .exception(exception)
                 .path(exception.getFieldName())
+                .message(exception.getMessage())
                 .status(BAD_REQUEST)
                 .entity();
     }
@@ -38,6 +41,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ApiError.builder()
                 .exception(exception)
+                .message(exception.getMessage())
                 .status(BAD_REQUEST)
                 .entity();
     }
