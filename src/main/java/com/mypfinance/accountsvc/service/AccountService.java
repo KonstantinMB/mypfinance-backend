@@ -1,14 +1,15 @@
 package com.mypfinance.accountsvc.service;
 
+import com.mypfinance.accountsvc.exception.ResourceNotFoundException;
 import com.mypfinance.accountsvc.models.domain.Account;
-import com.mypfinance.budgettrackersvc.exception.RequestNotValidException;
+import com.mypfinance.accountsvc.exception.RequestNotValidException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Optional;
 
 public interface AccountService {
 
     Account getAccountInfo(String username) throws UsernameNotFoundException;
+
+    Account getAccountInfoById(String id) throws ResourceNotFoundException;
 
     void accountExists(String username, String email) throws RequestNotValidException;
 

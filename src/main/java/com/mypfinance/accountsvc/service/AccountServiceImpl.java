@@ -1,8 +1,9 @@
 package com.mypfinance.accountsvc.service;
 
+import com.mypfinance.accountsvc.exception.ResourceNotFoundException;
 import com.mypfinance.accountsvc.models.domain.Account;
 import com.mypfinance.accountsvc.repository.AccountRepository;
-import com.mypfinance.budgettrackersvc.exception.RequestNotValidException;
+import com.mypfinance.accountsvc.exception.RequestNotValidException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +29,16 @@ public class AccountServiceImpl implements AccountService {
         }
         return account.get();
     }
+
+    @Override
+    public Account getAccountInfoById(String accountId) throws ResourceNotFoundException {
+
+        Optional<Account> account =  repository.getAccountById(accountId);
+
+        if(account.isEmpty()) {
+            throw new ResourceNotFoundException(String.format("Account with id: [%s] not found.", accountId), HttpStatus.BAD_REQUEST);
+        }
+        return account.get();    }
 
     @Override
     public void accountExists(String username, String email) throws RequestNotValidException {

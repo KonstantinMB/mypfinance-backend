@@ -6,7 +6,7 @@ import com.mypfinance.accountsvc.models.dto.AccountResponse;
 import com.mypfinance.accountsvc.models.mapper.AccountMapper;
 import com.mypfinance.accountsvc.security.JwtTokenGeneration;
 import com.mypfinance.accountsvc.service.AccountService;
-import com.mypfinance.budgettrackersvc.exception.RequestNotValidException;
+import com.mypfinance.accountsvc.exception.RequestNotValidException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

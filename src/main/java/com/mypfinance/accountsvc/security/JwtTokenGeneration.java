@@ -36,7 +36,7 @@ public class JwtTokenGeneration {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(1, ChronoUnit.HOURS))
+                .expiresAt(now.plus(6, ChronoUnit.HOURS))
                 .claim("accountId", account.getId())
                 .claim("roles", roles)
                 .build();

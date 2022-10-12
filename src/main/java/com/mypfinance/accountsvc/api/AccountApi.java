@@ -1,10 +1,16 @@
 package com.mypfinance.accountsvc.api;
 
+import com.mypfinance.accountsvc.exception.ResourceNotFoundException;
 import com.mypfinance.accountsvc.models.mapper.AccountMapper;
 import com.mypfinance.accountsvc.models.dto.AccountResponse;
 import com.mypfinance.accountsvc.service.AccountService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -22,12 +28,11 @@ public class AccountApi {
         this.mapper = mapper;
     }
 
-    @GetMapping(value = "/email", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountResponse> getAccountInfo() {
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountResponse> getAccountInfo(@AuthenticationPrincipal Jwt jwt) throws ResourceNotFoundException {
 
-//        TODO:
-        String username = null;
+        String accountId = jwt.getClaimAsString("accountId");
 
-        return ResponseEntity.ok(mapper.mapAccountToAccountResponse(service.getAccountInfo(username)));
+        return ResponseEntity.ok(mapper.mapAccountToAccountResponse(service.getAccountInfoById(accountId)));
     }
 }
