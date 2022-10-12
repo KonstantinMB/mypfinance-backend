@@ -1,5 +1,7 @@
 package com.mypfinance.accountsvc.security;
 
+import com.mypfinance.accountsvc.models.domain.Account;
+import com.mypfinance.accountsvc.service.AccountService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -16,11 +18,17 @@ public class JwtTokenGeneration {
 
     private final JwtEncoder encoder;
 
-    public JwtTokenGeneration(JwtEncoder encoder) {
+    private final AccountService accountService;
+
+    public JwtTokenGeneration(JwtEncoder encoder, AccountService accountService) {
         this.encoder = encoder;
+        this.accountService = accountService;
     }
 
     public String generateToken(Authentication authentication) {
+
+        Account account = accountService.getAccountInfo(authentication.getName());
+
         Instant now = Instant.now();
         String roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -29,7 +37,7 @@ public class JwtTokenGeneration {
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
-                .subject(authentication.getName())
+                .claim("accountId", account.getId())
                 .claim("roles", roles)
                 .build();
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

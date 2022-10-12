@@ -1,6 +1,9 @@
 package com.mypfinance.accountsvc.security;
 
 import com.mypfinance.accountsvc.service.CustomUserDetailsService;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -12,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
@@ -34,13 +38,13 @@ import java.util.Base64;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
 
-    @Value(value = "${jwt.secret.key}")
-    private String secretKey;
+    private RSAKey rsaKey;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -74,20 +78,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    JwtDecoder jwtDecoder(){
-        SecretKey byteKey = convertStringToSecretKey(secretKey);
-        return NimbusJwtDecoder.withSecretKey(byteKey).build();
+    public JWKSource<SecurityContext> jwkSource() {
+        rsaKey = JwksConfig.generateRsa();
+        JWKSet jwkSet = new JWKSet(rsaKey);
+        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
 
     @Bean
-    JwtEncoder jwtEncoder(){
-        SecretKey byteKey = convertStringToSecretKey(secretKey);
-        JWKSource<SecurityContext> source = new ImmutableSecret<>(byteKey);
-        return new NimbusJwtEncoder(source);
+    JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks) {
+        return new NimbusJwtEncoder(jwks);
     }
 
-    private static SecretKey convertStringToSecretKey(String encodedKey) {
-        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+    @Bean
+    JwtDecoder jwtDecoder() throws JOSEException {
+        return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
     }
 }
