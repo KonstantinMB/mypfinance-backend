@@ -35,6 +35,18 @@ public class ExpenseTransactionServiceImpl implements ExpenseTransactionService 
     }
 
     @Override
+    public List<ExpenseTransaction> getTransactions(String accountId) throws ResourceNotFoundException {
+
+        List<ExpenseTransaction> response = repository.getTransactionsByAccountId(accountId);
+
+        if(response.isEmpty()){
+            throw new ResourceNotFoundException("No transactions found.", BAD_REQUEST);
+        }
+
+        return response;
+    }
+
+    @Override
     public List<ExpenseTransaction> getTransactionsByCategoryName(String categoryName) throws ResourceNotFoundException {
 
         List<ExpenseTransaction> response = repository.getTransactionsByCategoryName(categoryName.toLowerCase(Locale.ROOT));

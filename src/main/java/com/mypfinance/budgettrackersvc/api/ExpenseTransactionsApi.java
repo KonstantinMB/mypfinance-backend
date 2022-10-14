@@ -7,6 +7,9 @@ import com.mypfinance.budgettrackersvc.models.mapper.TransactionMapper;
 import com.mypfinance.budgettrackersvc.service.ExpenseTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +37,16 @@ public class ExpenseTransactionsApi {
                 service.getTransactionById(transactionId)));
     }
 
+    @GetMapping(consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TransactionDto>> getTransactions(@AuthenticationPrincipal Jwt jwt)
+            throws ResourceNotFoundException {
+
+        String accountId = jwt.getClaimAsString("accountId");
+
+        return ResponseEntity.ok(mapper.mapListOfExpenseTransactionsToDtos(
+                service.getTransactions(accountId)));
+    }
+
     @GetMapping(value = "/category", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TransactionDto>> getAllTransactionsByCategory(@RequestBody CategoryDto request)
             throws ResourceNotFoundException {
@@ -51,19 +64,25 @@ public class ExpenseTransactionsApi {
     }
 
     @PutMapping(value = "/{transactionId}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<TransactionDto> modifyTransaction(@PathVariable String transactionId, @RequestBody TransactionDto request)
-            throws RuntimeException, ResourceNotFoundException {
+    public ResponseEntity<TransactionDto> modifyTransaction(
+            @AuthenticationPrincipal Jwt jwt, @PathVariable String transactionId, @RequestBody TransactionDto request)
+            throws ResourceNotFoundException {
+
+        String accountId = jwt.getClaimAsString("accountId");
 
         return ResponseEntity.ok(mapper.mapExpenseTransactionToDto(
-                service.modifyTransaction(transactionId, mapper.mapTransactionDtoToExpenseTransaction(request))));
+                service.modifyTransaction(transactionId, mapper.mapTransactionDtoToExpenseTransaction(accountId, request))));
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE , consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<TransactionDto> createTransaction(@RequestBody TransactionDto request)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<TransactionDto> createTransaction(@AuthenticationPrincipal Jwt jwt, @RequestBody TransactionDto request)
             throws ResourceNotFoundException {
 
+        String accountId = jwt.getClaimAsString("accountId");
+
         return ResponseEntity.ok(mapper.mapExpenseTransactionToDto(
-                service.saveTransaction(mapper.mapTransactionDtoToExpenseTransaction(request))));
+                service.saveTransaction(mapper.mapTransactionDtoToExpenseTransaction(accountId, request))));
     }
 
     @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)

@@ -26,6 +26,11 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -43,12 +48,13 @@ public class SecurityConfig {
                 .csrf((csrf) -> csrf.disable())
                 .authorizeRequests(auth -> {
                     auth.antMatchers("/api/v1/login","/api/v1/register").permitAll();
-                    auth.antMatchers("/api/v1/budget-tracker/expense/categories").hasRole("USER");
-                    auth.antMatchers("/api/v1/budget-tracker/expense/transactions").hasRole("USER");
+                    auth.antMatchers("/api/v1/budget-tracker/expense/categories**").hasAuthority("ROLE_USER");
+                    auth.antMatchers("/api/v1/budget-tracker/expense/transactions**").hasAuthority("ROLE_USER");
+                    auth.anyRequest().authenticated();
                 })
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .userDetailsService(customUserDetailsService)
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling((ex) -> ex
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                         .accessDeniedHandler(new BearerTokenAccessDeniedHandler()))
@@ -83,5 +89,19 @@ public class SecurityConfig {
     @Bean
     JwtDecoder jwtDecoder() throws JOSEException {
         return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("https://localhost:8080"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET"));
+        configuration.setAllowedMethods(List.of("POST"));
+        configuration.setAllowedMethods(List.of("PUT"));
+        configuration.setAllowedMethods(List.of("DELETE"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

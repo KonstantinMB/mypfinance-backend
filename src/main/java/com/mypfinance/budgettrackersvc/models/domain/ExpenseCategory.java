@@ -1,15 +1,14 @@
 package com.mypfinance.budgettrackersvc.models.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
-import java.util.UUID;
-
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.CascadeType.DETACH;
 
 @Entity
 @Table(name = "expense_category")
@@ -23,6 +22,9 @@ public class ExpenseCategory {
     @Id
     private String id;
 
+    @Column(name = "account_id")
+    private String accountId;
+
     @Column(name = "name")
     private String name;
 
@@ -33,20 +35,13 @@ public class ExpenseCategory {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ExpenseCategory that = (ExpenseCategory) o;
-
-        if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(name, that.name)) return false;
-        return Objects.equals(color, that.color);
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ExpenseCategory category = (ExpenseCategory) o;
+        return id != null && Objects.equals(id, category.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (color != null ? color.hashCode() : 0);
-        return result;
+        return getClass().hashCode();
     }
 }

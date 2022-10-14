@@ -12,6 +12,8 @@ public interface ExpenseTransactionService {
 
     List<ExpenseTransaction> getTransactionsByCategoryName(String categoryName) throws ResourceNotFoundException;
 
+    List<ExpenseTransaction> getTransactions(String accountId) throws ResourceNotFoundException;
+
     List<ExpenseTransaction> getTransactionsByDate(LocalDate date) throws ResourceNotFoundException;
 
     ExpenseTransaction saveTransaction(ExpenseTransaction transaction) throws ResourceNotFoundException;

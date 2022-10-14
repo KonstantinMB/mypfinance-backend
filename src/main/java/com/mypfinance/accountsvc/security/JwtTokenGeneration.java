@@ -30,7 +30,7 @@ public class JwtTokenGeneration {
         Account account = accountService.getAccountInfo(authentication.getName());
 
         Instant now = Instant.now();
-        String roles = authentication.getAuthorities().stream()
+        String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
         JwtClaimsSet claims = JwtClaimsSet.builder()
@@ -38,7 +38,7 @@ public class JwtTokenGeneration {
                 .issuedAt(now)
                 .expiresAt(now.plus(6, ChronoUnit.HOURS))
                 .claim("accountId", account.getId())
-                .claim("roles", roles)
+                .claim("scope", scope)
                 .build();
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }

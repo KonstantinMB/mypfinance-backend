@@ -24,6 +24,11 @@ public interface ExpenseTransactionRepository extends JpaRepository<ExpenseTrans
 
     @Query("SELECT c "
             + "FROM ExpenseTransaction c "
+            + "WHERE c.accountId = ?1")
+    List<ExpenseTransaction> getTransactionsByAccountId(String accountId);
+
+    @Query("SELECT c "
+            + "FROM ExpenseTransaction c "
             + "WHERE c.date = ?1")
     List<ExpenseTransaction> getTransactionsByDate(String date);
 
